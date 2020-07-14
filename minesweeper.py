@@ -201,7 +201,7 @@ class MinesweeperAI():
                     continue
                 
                 tup = (i,j)
-                # Adding tuple which is neither safe cell nor mine cell
+                # Adding cell which is neither mine nor safe
                 if 0 <= i < self.height and 0 <= j < self.width and tup not in self.safes:
                     if tup in self.mines:
                         count -= 1
