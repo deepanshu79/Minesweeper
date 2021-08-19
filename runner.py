@@ -46,9 +46,6 @@ revealed = set()
 flags = set()
 lost = False
 
-# Show instructions initially
-instructions = True
-
 while True:
 
     # Check if game quit
@@ -57,46 +54,6 @@ while True:
             sys.exit()
 
     screen.fill(BLACK)
-
-    # Show game instructions
-    if instructions:
-
-        # Title
-        title = largeFont.render("Play Minesweeper", True, WHITE)
-        titleRect = title.get_rect()
-        titleRect.center = ((width / 2), 50)
-        screen.blit(title, titleRect)
-
-        # Rules
-        rules = [
-            "Click a cell to reveal it.",
-            "Right-click a cell to mark it as a mine.",
-            "Mark all mines successfully to win!"
-        ]
-        for i, rule in enumerate(rules):
-            line = smallFont.render(rule, True, WHITE)
-            lineRect = line.get_rect()
-            lineRect.center = ((width / 2), 150 + 30 * i)
-            screen.blit(line, lineRect)
-
-        # Play game button
-        buttonRect = pygame.Rect((width / 4), (3 / 4) * height, width / 2, 50)
-        buttonText = mediumFont.render("Play Game", True, BLACK)
-        buttonTextRect = buttonText.get_rect()
-        buttonTextRect.center = buttonRect.center
-        pygame.draw.rect(screen, WHITE, buttonRect)
-        screen.blit(buttonText, buttonTextRect)
-
-        # Check if play button clicked
-        click, _, _ = pygame.mouse.get_pressed()
-        if click == 1:
-            mouse = pygame.mouse.get_pos()
-            if buttonRect.collidepoint(mouse):
-                instructions = False
-                time.sleep(0.3)
-
-        pygame.display.flip()
-        continue
 
     # Draw board
     cells = []
