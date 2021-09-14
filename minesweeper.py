@@ -8,7 +8,10 @@ class Minesweeper():
     """
 
     def __init__(self, height=8, width=8, mines=8):
-
+        """ 
+        Creating board using list and initializing other variables.
+        """
+        
         # Set initial width, height, and number of mines
         self.height = height
         self.width = width
@@ -33,22 +36,10 @@ class Minesweeper():
         # At first, player has found no mines
         self.mines_found = set()
 
-    def print(self):
-        """
-        Prints a text-based representation
-        of where mines are located.
-        """
-        for i in range(self.height):
-            print("--" * self.width + "-")
-            for j in range(self.width):
-                if self.board[i][j]:
-                    print("|X", end="")
-                else:
-                    print("| ", end="")
-            print("|")
-        print("--" * self.width + "-")
-
     def is_mine(self, cell):
+        """
+        Tells whether a cell is mine or not.
+        """
         i, j = cell
         return self.board[i][j]
 
@@ -86,19 +77,28 @@ class Minesweeper():
 
 class Sentence():
     """
-    Logical statement about a Minesweeper game
+    Logical statement about a Minesweeper game.
     A sentence consists of a set of board cells,
     and a count of the number of those cells which are mines.
     """
 
     def __init__(self, cells, count):
+        """
+        Initializing set and variable based on given arguments.
+        """
         self.cells = set(cells)
         self.count = count
 
     def __eq__(self, other):
+        """
+        Check whether 2 sentences are equivalent or not.
+        """
         return self.cells == other.cells and self.count == other.count
 
     def __str__(self):
+        """
+        Returns a string representation of sentence.
+        """
         return f"{self.cells} = {self.count}"
 
     def known_mines(self):
@@ -138,11 +138,13 @@ class Sentence():
 
 class MinesweeperAI():
     """
-    Minesweeper game player
+    Minesweeper game player ( AI )
     """
 
     def __init__(self, height=8, width=8):
-
+        """
+        Initializing the required sets and variables.
+        """
         # Set initial height and width
         self.height = height
         self.width = width
@@ -192,7 +194,10 @@ class MinesweeperAI():
         """
         self.moves_made.add(cell)
         self.safes.add(cell)
+        
         s = set()
+        
+        # Adding only those cells to the set about which we have no knowledge presently.
         for i in range(cell[0] - 1, cell[0] + 2):
             for j in range(cell[1] - 1, cell[1] + 2):
 
@@ -208,10 +213,12 @@ class MinesweeperAI():
                     else:
                         s.add(tup)
       
+        # Adding only the non-empty sentence.
         if len(s) != 0:
             sentence = Sentence(s,count)
             self.knowledge.append(sentence)
-
+        
+        # Checking if any inference can be made based on existing knowledge base.
         for i in self.knowledge:
             cc = Sentence(i.cells,i.count)
             if len(cc.cells) == cc.count and cc.count != 0:
@@ -221,12 +228,13 @@ class MinesweeperAI():
                 for j in cc.cells:
                     self.mark_safe(j)
 
-        # Removing those sentences which have empty cells set            
+        # Removing those sentences from knowledge base which have empty cells set.            
         cp = (self.knowledge).copy()
         for i in cp:
             if len(i.cells) == 0:
                 self.knowledge.remove(i)
        
+        # Adding more unique sentences based on set difference.
         cp = (self.knowledge).copy()
         for i in cp:
             for j in cp:  
@@ -239,7 +247,7 @@ class MinesweeperAI():
                             ss = Sentence(tt,j.count-i.count)
                             self.knowledge.append(ss)
         
-        # Removing duplicate sentences from self.knowledge
+        # Removing duplicate sentences from self.knowledge.
         res = [] 
         for i in self.knowledge: 
             if i not in res: 
