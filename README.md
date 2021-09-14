@@ -7,6 +7,4 @@ Files :
 
 minesweeper.py : Implements the logic behind the minesweeper game.
 
-runner.py : Implements the graphical interface of the game.
-
-requirements.txt : Mentions the requirement for running the game.
+runner.py : Implements the user interface of the game.
